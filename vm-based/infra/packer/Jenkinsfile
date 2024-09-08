@@ -3,7 +3,7 @@ pipeline {
   agent {
     dockerfile {
       label 'docker'
-      additionalBuildArgs '${DOCKER_NO_CACHE} --tag "packer-demo/jenkins-agent:${IMG_LABEL}" --build-arg "TERRAFORM_VERSION=${TERRAFORM_VERSION}" --build-arg "PACKER_VERSION=${PACKER_VERSION}" --build-arg "USER_ID=$(user_id="$(id --user)"; [[ "${user_id}" == 0 ]] && echo "1000" || echo "${user_id}")" --build-arg "GROUP_ID=$(group_id="$(id --group)"; [[ "${group_id}" == 0 ]] && echo "1000" || echo "${group_id}")"'
+      additionalBuildArgs '${DOCKER_NO_CACHE} --tag "packer-demo/jenkins-agent:latest" --build-arg "USER_ID=$(user_id="$(id --user)"; [[ "${user_id}" == 0 ]] && echo "1009" || echo "${user_id}")" --build-arg "GROUP_ID=$(group_id="$(id --group)"; [[ "${group_id}" == 0 ]] && echo "1009" || echo "${group_id}")"'
     }
   }
   environment {
@@ -12,35 +12,6 @@ pipeline {
     WORK_SUB_DIR          = 'vm-based/infra/packer'
     JENKINS_USER_ID       = 'user'
     JENKINS_API_TOKEN     = credentials('JENKIN_API_TOKEN')
-  }
-
-  parameters {
-    string(
-      name: 'IMG_LABEL',
-      defaultValue: 'latest',
-      description: 'docker container image label name'
-    )
-    choice(
-      name: 'PACKER_REMOTE_USER',
-      choices: [
-        'ubuntu',
-      ],
-      description: 'packer remote user'
-    )
-    choice(
-      name: 'TERRAFORM_VERSION',
-      choices: [
-        '0.12.24',
-      ],
-      description: 'terraform version'
-    )
-    choice(
-      name: 'PACKER_VERSION',
-      choices: [
-        '1.5.6',
-      ],
-      description: 'packer version'
-    )
   }
 
   stages {
