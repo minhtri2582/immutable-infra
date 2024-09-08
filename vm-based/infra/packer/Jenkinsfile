@@ -3,7 +3,7 @@ pipeline {
   agent {
     dockerfile {
       label 'docker'
-      additionalBuildArgs '${DOCKER_NO_CACHE} --tag "packer-demo/jenkins-agent:latest" --build-arg "USER_ID=$(user_id="$(id --user)"; [[ "${user_id}" == 0 ]] && echo "1009" || echo "${user_id}")" --build-arg "GROUP_ID=$(group_id="$(id --group)"; [[ "${group_id}" == 0 ]] && echo "1009" || echo "${group_id}")"'
+      additionalBuildArgs '${DOCKER_NO_CACHE} --tag "packer-demo/jenkins-agent:latest"'
     }
   }
   environment {
@@ -11,7 +11,7 @@ pipeline {
     AWS_SECRET_ACCESS_KEY = credentials('PACKER_AWS_SECRET_KEY')
     WORK_SUB_DIR          = 'vm-based/infra/packer'
     JENKINS_USER_ID       = 'user'
-    JENKINS_API_TOKEN     = credentials('JENKIN_API_TOKEN')
+    JENKINS_API_TOKEN     =  credentials('JENKIN_API_TOKEN')
   }
 
   stages {
